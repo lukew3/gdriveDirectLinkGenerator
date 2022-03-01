@@ -1,0 +1,49 @@
+<html>
+<head>
+	<title>Google Drive Direct Link Generator</title>
+	<style>
+		#copiedNotif {
+			font-size: 10pt;
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<h1>Google Drive Direct Link Generator</h1>
+	<p>Paste a sharing link to a google drive file in the form below and a direct link will be generated and copied to your clipboard</p>
+	<form onsubmit="generate()">
+		<input id="shareInput" type="text" />
+		<input id="runButton" type="submit" value="Run"/>
+	</form>
+	<p id="result"></p>
+	<p id="copiedNotif">Copied result!</p>
+	<script>
+		const input = document.getElementById("shareInput");
+		const output = document.getElementById("result");
+		const run = document.getElementById("runButton");
+		const copied = document.getElementById("copiedNotif");
+
+		let id, result;
+		input.value = "";
+		input.focus();
+		input.select();
+		function generate() {
+			event.preventDefault();
+			id = input.value.split("/")[5];
+			if (id) {
+				result = "https://drive.google.com/uc?export=download&id=" + id;
+				output.innerHTML = result;
+				navigator.clipboard.writeText(result);
+				copied.style.display = "inline-block";
+			} else {
+				output.innerHTML = "Invalid input";
+				copied.style.display = "none";
+			}
+			input.value = "";
+			input.focus();
+			input.select();
+		}
+		run.addEventListener("click", generate);
+	</script>
+</body>
+</html>
